@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Install started on `date`
+      - wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-4.0.tgz
+      - tar -xf apache-jmeter-4.0.tgz
+  build:
+    commands:
+      - echo Test started on `date`
+      - apache-jmeter-4.0/bin/jmeter -n -t ./src/test/jmeter/petclinic_test_plan.jmx -l result.jtl -Jhost=${ALB_HOST}
+      - mvn clean verify test -Dtest=*PetClinicTest1*
+      - echo Test ended on `date`
